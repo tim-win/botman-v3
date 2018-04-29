@@ -1,0 +1,5 @@
+*.db
+__pycache__
+*.pyc
+slackbot_settings.py
+
