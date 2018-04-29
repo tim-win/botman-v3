@@ -16,7 +16,7 @@ def run(message):
 
     text = record_message(message)
 
-    clean(text)
+    text = clean(text)
 
     ensure_ngrams_table()
     ngrams = normalize(text)
