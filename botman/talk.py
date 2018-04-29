@@ -15,5 +15,5 @@ def generate_chain():
 
 
 def run(message):
-    # message.send(debug('ngrams'))
+    """All things to do when talking."""
     message.send(generate_chain())

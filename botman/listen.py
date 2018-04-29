@@ -4,14 +4,19 @@ from botman.db_mgmt import ensure_messages_table
 from botman.db_mgmt import ensure_ngrams_table
 from botman.db_mgmt import add_gram
 from botman.markov import normalize
+from botman.slack_tools import clean
+
 
 DB_NAME = '/opt/botman-v3/main.db'
 
 
 def run(message):
+    """All things to do when listening."""
     ensure_messages_table()
 
     text = record_message(message)
+
+    clean(text)
 
     ensure_ngrams_table()
     ngrams = normalize(text)
