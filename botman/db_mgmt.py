@@ -130,7 +130,7 @@ def retrieve_random_message():
 def debug(table):
     outp = []
     with SQLiteConn() as c:
-        rows = c.execute('SELECT * from {0};'.format(table))
+        rows = c.execute('SELECT * from ?;', (table,))
         for row in rows:
             outp.append(row)
 
