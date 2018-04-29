@@ -128,7 +128,7 @@ function main() {
         unflag_initial_run
 
         # Clean up all the old/stopped docker images and containers
-        clean_up_old_dockers
+        # clean_up_old_dockers  # disabled for now
 
         wait_a_bit
     done

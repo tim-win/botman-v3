@@ -1,4 +1,5 @@
 FROM arm32v6/alpine:latest
+# FROM alpine:latest
 
 RUN mkdir /botman-v3/
 
@@ -6,7 +7,7 @@ WORKDIR /botman-v3/
 
 ENTRYPOINT ["/botman-v3/entrypoint.sh"]
 
-CMD ["python3 /botman-v3/run.sh"]
+CMD ["python3", "/botman-v3/run.py"]
 
 RUN apk update && \
     apk add python3

@@ -3,7 +3,7 @@ import random
 import sqlite3
 
 RESPOND_PERCENT = 30
-DB_NAME = 'example.db'
+DB_NAME = '/opt/botman-v3/main.db'
 
 
 def run(message):
