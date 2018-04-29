@@ -1,7 +1,45 @@
 import pytest
 
+from botman.markov import choose_ngram
 from botman.markov import fits
 from botman.markov import generate_indicies
+from botman.markov import normalize
+
+
+@pytest.mark.parametrize('test, control, description', [
+    (
+        ({'very': 1, 'very good': 1, 'very good robot.': 1}, lambda: 0.25),
+        'very',
+        'Failed to pick first ngram'
+    ),
+    (
+        ({'very': 1, 'very good': 1, 'very good robot.': 1}, lambda: 0.5),
+        'very good',
+        'Failed to pick second ngram'
+    ),
+    (
+        ({'very': 1, 'very good': 1, 'very good robot.': 1}, lambda: 0.75),
+        'very good robot.',
+        'Failed to pick third ngram'
+    ),
+    (
+        ({'very': 1, 'very good': 99}, lambda: 0.009),
+        'very',
+        'Failed to pick minority ngram'
+    ),
+    (
+        ({'very': 1, 'very good': 99}, lambda: 0.02),
+        'very good',
+        'Failed to pick low-end majority ngram'
+    ),
+    (
+        ({'very': 1, 'very good': 99}, lambda: 0.99),
+        'very good',
+        'Failed to pick high-end majority ngram'
+    ),
+    ])
+def test_choose_ngram(test, control, description):
+    assert choose_ngram(*test) == control, description
 
 
 @pytest.mark.parametrize('test, control, description', [
@@ -72,6 +110,16 @@ from botman.markov import generate_indicies
         False,
         'Somehow fit 2 1-grams into a 2 word list at an illogical index'
     ),
+    (
+        (
+            0,
+            len(
+                ['1', '2']),
+            2,
+            0),
+        True,
+        'Failed to fit 0 length 2nd gram'
+    ),
     ])
 def test_fits(test, control, description):
     """Tests fits.
@@ -98,3 +146,46 @@ def test_fits(test, control, description):
 ])
 def test_generate_indicies(test, control, description):
     assert generate_indicies(*test) == control, description
+
+
+@pytest.mark.parametrize('test, control, description', [
+    (
+        'i am a very good robot.',
+        {
+            'i': {'am': 1, 'am a': 1, 'am a very': 1, 'am a very good': 1},
+            'i am': {
+                'a': 1, 'a very': 1,
+                'a very good': 1, 'a very good robot.': 1},
+            'i am a': {'very': 1, 'very good': 1, 'very good robot.': 1},
+            'i am a very': {'good': 1, 'good robot.': 1},
+            'am': {
+                'a': 1, 'a very': 1,
+                'a very good': 1, 'a very good robot.': 1},
+            'am a': {'very': 1, 'very good': 1, 'very good robot.': 1},
+            'am a very': {'good': 1, 'good robot.': 1},
+            'am a very good': {'robot.': 1},
+            'a': {'very': 1, 'very good': 1, 'very good robot.': 1},
+            'a very': {'good': 1, 'good robot.': 1},
+            'a very good': {'robot.': 1},
+            'a very good robot.': {'': 1},
+            'very': {'good': 1, 'good robot.': 1},
+            'very good': {'robot.': 1},
+            'very good robot.': {'': 1},
+            'good': {'robot.': 1},
+            'good robot.': {'': 1},
+            'robot.': {'': 1},
+        },
+        'manually written out basic case failed, bucko'
+    ),
+    (
+        'a a a',
+        {
+            'a': {'a': 2, 'a a': 1, '': 1},
+            'a a': {'a': 1, '': 1},
+            'a a a': {'': 1}
+        },
+        'simple case of duplicate occurences failed'
+    )
+])
+def test_normalize(test, control, description):
+    assert normalize(test) == control, description

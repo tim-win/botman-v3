@@ -1,5 +1,41 @@
 """markov.py"""
+import random
+
 N = 4
+
+
+def generate_chain():
+    chain = []
+
+    while True:
+        pass
+
+
+def choose_ngram(counts, function=random.random):
+    """Choose next ngram based on a function.
+
+    Parameters
+    ----------
+    counts : dict
+        Key > value pairs where keys are ngrams and values are integer counts
+        they have been seen as
+
+    function : callable
+        A function that takes no arguments and returns a number between 0 and
+        1. Defaults to random.random.
+
+    Returns
+    -------
+    str: an ngram
+    """
+    total = sum([val for val in counts.values()])
+    magic_number = function() * total
+
+    running = 0
+    for item in sorted(counts.items()):
+        running += item[1]
+        if running > magic_number:
+            return item[0]
 
 
 def normalize(string):
@@ -11,23 +47,23 @@ def normalize(string):
     gram output (assuming N == 4):
         {
             'i': {'am': 1, 'am a': 1, 'am a very': 1, 'am a very good': 1},
-            'i am': {'a': 1, 'a very': 1, 'a very good': 1, 'very good robot': 1,},
-            'i am a': {'very': 1, 'very good': 1, 'very good robot': 1,},
-            'i am a very': {'good': 1, 'good robot': 1,},
-            'am': {'a': 1, 'a very': 1, 'a very good': 1, 'a very good robot': 1,},
-            'am a': {'very': 1, 'very good': 1, 'very good robot': 1,},
-            'am a very': {'good': 1, 'good robot': 1,},
-            'am a very good': {'robot': 1,},
-            'a': {'very': 1, 'very good': 1, 'very good robot': 1,},
-            'a very': {'good': 1, 'good robot': 1,},
-            'a very good': {'robot': 1,},
-            'a very good robot': {'': 1,},
-            'very': {'good': 1, 'good robot': 1,},
-            'very good': {'robot': 1,},
-            'very good robot': {'': 1,},
-            'good': {'robot': 1,},
-            'good robot': {'': 1,},
-            'robot': {'': 1,},
+            'i am': {'a': 1, 'a very': 1, 'a very good': 1, 'very good robot.': 1,},
+            'i am a': {'very': 1, 'very good': 1, 'very good robot.': 1,},
+            'i am a very': {'good': 1, 'good robot.': 1,},
+            'am': {'a': 1, 'a very': 1, 'a very good': 1, 'a very good robot.': 1,},
+            'am a': {'very': 1, 'very good': 1, 'very good robot.': 1,},
+            'am a very': {'good': 1, 'good robot.': 1,},
+            'am a very good': {'robot.': 1,},
+            'a': {'very': 1, 'very good': 1, 'very good robot.': 1,},
+            'a very': {'good': 1, 'good robot.': 1,},
+            'a very good': {'robot.': 1,},
+            'a very good robot.': {'': 1,},
+            'very': {'good': 1, 'good robot.': 1,},
+            'very good': {'robot.': 1,},
+            'very good robot.': {'': 1,},
+            'good': {'robot.': 1,},
+            'good robot.': {'': 1,},
+            'robot.': {'': 1,},
         }
     """  # noqa
     words = string.split()
@@ -36,22 +72,27 @@ def normalize(string):
     grams = {}
 
     for gram_size in range(1, N + 1):
-        for second_gram_size in range(1, N + 1):
-            for index in count:
+        for second_gram_size in range(0, N + 1):
+            for index in range(count):
                 # First, make sure everything fits
                 if not fits(index, count, gram_size, second_gram_size):
                     continue
 
-                first_gram_start = index
-                first_gram_end = first_gram_start + gram_size
-                second_gram_start = first_gram_end
-                second_gram_end = second_gram_start
+                # Only run 0 length second grams at end of input
+                if not second_gram_size and fits(index, count, gram_size, 1):
+                    continue
 
-                first_gram = ' '.join(words[index:index + gram_size])
-                second_gram = ' '.join(
-                    words[index + gram_size:index + gram_size + second_gram_size])
+                g1_start, g1_end, g2_start, g2_end = generate_indicies(
+                    index, gram_size, second_gram_size)
 
-                grams[first_gram] = grams.get(first_gram, 0) + 1
+                first_gram = ' '.join(words[g1_start:g1_end])
+                second_gram = ' '.join(words[g2_start:g2_end])
+
+                grams[first_gram] = grams.get(first_gram, {})
+
+                grams[first_gram][second_gram] = grams[first_gram].get(
+                    second_gram, 0) + 1
+    return grams
 
 
 def fits(index, count, gram_one, gram_two):
