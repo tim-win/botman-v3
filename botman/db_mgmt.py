@@ -62,7 +62,7 @@ def fetch_counts(ngram):
         if row:
             counts = json.loads(row[0])
 
-    return ngram, counts
+    return counts
 
 
 def set_counts(ngram, counts):
@@ -95,7 +95,7 @@ def add_gram(ngram, counts):
 
     with SQLiteConn() as c:
 
-        existing = fetch_counts(ngram)[1]
+        existing = fetch_counts(ngram)
 
         for key in counts:
             existing[key] = existing.get(key, 0) + counts[key]
@@ -108,7 +108,7 @@ def add_gram(ngram, counts):
     return existing
 
 
-def retrieve_random():
+def retrieve_random_message():
     with SQLiteConn() as c:
 
         count = c.execute('SELECT COUNT(*) from messages;')
@@ -125,3 +125,13 @@ def retrieve_random():
         rando = row[0]
 
     return rando
+
+
+def debug(table):
+    outp = []
+    with SQLiteConn() as c:
+        rows = c.execute('SELECT * from {0};'.format(table))
+        for row in rows:
+            outp.append(row)
+
+    return json.dumps(outp, indent=4)

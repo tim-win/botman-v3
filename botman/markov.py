@@ -4,13 +4,6 @@ import random
 N = 4
 
 
-def generate_chain():
-    chain = []
-
-    while True:
-        pass
-
-
 def choose_ngram(counts, function=random.random):
     """Choose next ngram based on a function.
 
@@ -46,6 +39,7 @@ def normalize(string):
 
     gram output (assuming N == 4):
         {
+            '': {'i': 1, 'i am': 1, 'i am a': 1, 'i am a very': 1},
             'i': {'am': 1, 'am a': 1, 'am a very': 1, 'am a very good': 1},
             'i am': {'a': 1, 'a very': 1, 'a very good': 1, 'very good robot.': 1,},
             'i am a': {'very': 1, 'very good': 1, 'very good robot.': 1,},
@@ -71,11 +65,15 @@ def normalize(string):
 
     grams = {}
 
-    for gram_size in range(1, N + 1):
+    for gram_size in range(0, N + 1):
         for second_gram_size in range(0, N + 1):
             for index in range(count):
                 # First, make sure everything fits
                 if not fits(index, count, gram_size, second_gram_size):
+                    continue
+
+                # Only run 0 length first grams at beginning of input
+                if not gram_size and index:
                     continue
 
                 # Only run 0 length second grams at end of input

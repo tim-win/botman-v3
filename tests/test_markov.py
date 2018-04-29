@@ -152,6 +152,7 @@ def test_generate_indicies(test, control, description):
     (
         'i am a very good robot.',
         {
+            '': {'i': 1, 'i am': 1, 'i am a': 1, 'i am a very': 1},
             'i': {'am': 1, 'am a': 1, 'am a very': 1, 'am a very good': 1},
             'i am': {
                 'a': 1, 'a very': 1,
@@ -180,6 +181,7 @@ def test_generate_indicies(test, control, description):
     (
         'a a a',
         {
+            '': {'a': 1, 'a a': 1, 'a a a': 1},
             'a': {'a': 2, 'a a': 1, '': 1},
             'a a': {'a': 1, '': 1},
             'a a a': {'': 1}

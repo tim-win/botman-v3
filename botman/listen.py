@@ -1,49 +1,19 @@
 """Listener command"""
-import random
-import sqlite3
+from botman.db_mgmt import record_message
+from botman.db_mgmt import ensure_messages_table
+from botman.db_mgmt import ensure_ngrams_table
+from botman.db_mgmt import add_gram
+from botman.markov import normalize
 
-RESPOND_PERCENT = 30
 DB_NAME = '/opt/botman-v3/main.db'
 
 
 def run(message):
-    conn = sqlite3.connect(DB_NAME)
-    c = conn.cursor()
-    c.execute(
-        '''CREATE TABLE IF NOT EXISTS
-        messages
-        (
-         text text,
-         ts integer,
-         user text,
-         type text,
-         channel text,
-         source_team text)'''
-    )
-    c.execute(
-        'INSERT INTO messages VALUES (?, ?, ?, ?, ?, ?)',
-        (
-            message.body['text'],
-            message.body['ts'],
-            message.body['user'],
-            message.body['type'],
-            message.body['channel'],
-            message.body.get('source_team', 'None'),
-        ))
-    conn.commit()
+    ensure_messages_table()
 
-    if random.random() < RESPOND_PERCENT / 100.0:
-        c = conn.cursor()
+    text = record_message(message)
 
-        count = c.execute('SELECT COUNT(*) from messages;')
-        count = count.fetchone()[0]
-
-        _id = random.randint(0, count-1)
-
-        row = c.execute('''
-            SELECT text
-            FROM messages
-            LIMIT 1
-            OFFSET {0};'''.format(_id)).fetchone()
-
-        message.send(row[0])
+    ensure_ngrams_table()
+    ngrams = normalize(text)
+    for ngram in ngrams:
+        add_gram(ngram, ngrams[ngram])
