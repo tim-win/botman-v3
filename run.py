@@ -12,7 +12,7 @@ from slackbot.bot import listen_to, respond_to
 from botman import listen
 
 RESPOND_PERCENT = 100
-DB_NAME = 'example.db'
+DB_NAME = '/opt/botman-v3/main.db'
 
 
 @listen_to('.*')
