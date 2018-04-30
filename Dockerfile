@@ -1,5 +1,5 @@
-# FROM arm32v6/alpine:latest
-FROM alpine:latest
+FROM arm32v6/alpine:latest
+# FROM alpine:latest
 
 RUN mkdir /botman-v3/
 
