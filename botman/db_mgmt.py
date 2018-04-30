@@ -127,10 +127,10 @@ def retrieve_random_message():
     return rando
 
 
-def debug(table):
+def debug_ngrams():
     outp = []
     with SQLiteConn() as c:
-        rows = c.execute('SELECT * from ?;', (table,))
+        rows = c.execute('SELECT * from ngrams;')
         for row in rows:
             outp.append(row)
 

@@ -12,7 +12,7 @@ from slackbot.bot import listen_to, respond_to
 
 from botman import listen
 from botman import talk
-from botman.db_mgmt import debug
+from botman.db_mgmt import debug_ngrams
 
 RESPOND_PERCENT = 100
 DB_NAME = '/opt/botman-v3/main.db'
@@ -31,7 +31,7 @@ def hear(message):
 
 @respond_to('debug')
 def debug_reply(message):
-    print(debug('ngrams'))
+    print(debug_ngrams())
     message.send('Check the logs.')
 
 
