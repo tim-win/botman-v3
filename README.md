@@ -12,7 +12,7 @@ Dev requirements include virtualenv, virtualenvwrapper, and a recent version of 
 
 Run the following commands to set up a dev environment:
 
-    mkvirtualenv botman-v3
+    mkvirtualenv botman-v3 --python=$(which python3)
     pip install -r requirements.txt
 
 That's it! You're good to go.
