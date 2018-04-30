@@ -20,6 +20,7 @@ DB_NAME = '/opt/botman-v3/main.db'
 
 @listen_to('.*')
 def hear(message):
+    print(message.body['text'])
     reload(listen)
     reload(talk)
     listen.run(message)
@@ -28,14 +29,15 @@ def hear(message):
     # message.send('ok, prove this works at all')
 
 
-@respond_to('.*botman.*')
-def catch_direct_cmds(message):
-    talk.run(message)
-
-
 @respond_to('debug')
 def debug_reply(message):
-    message.send(debug('ngrams'))
+    print(debug('ngrams'))
+    message.send('Check the logs.')
+
+
+@respond_to('.*')
+def catch_direct_cmds(message):
+    talk.run(message)
 
 
 def main(args):
