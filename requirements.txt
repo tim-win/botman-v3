@@ -2,3 +2,6 @@ slackbot
 ipython
 pytest
 hypothesis
+numpy
+pandas
+nltk
