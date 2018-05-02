@@ -11,6 +11,9 @@ def generate_chain():
         counts = fetch_counts(chain[-1])
         chain.append(choose_ngram(counts))
 
+    # Get rid of unsightly empty string
+    chain.pop(-1)
+
     return ' '.join(chain)
 
 
