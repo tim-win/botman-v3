@@ -24,7 +24,7 @@ def hear(message):
     reload(listen)
     reload(talk)
     listen.run(message)
-    if random.random() < 1/100.0:
+    if random.random() < 1/30.0:
         talk.run(message)
     # message.send('ok, prove this works at all')
 
