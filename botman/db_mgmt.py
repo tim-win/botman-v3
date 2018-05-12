@@ -135,3 +135,37 @@ def debug_ngrams():
             outp.append(row)
 
     return json.dumps(outp, indent=4)
+
+
+def ensure_settings_table():
+    with SQLiteConn() as c:
+
+        c.execute(
+            '''CREATE TABLE IF NOT EXISTS
+            settings
+            (
+             key text,
+             value text,
+             CONSTRAINT key_pk PRIMARY KEY (key))
+             '''
+        )
+
+
+def fetch_settings(key, default=None):
+    with SQLiteConn() as c:
+        row = c.execute('''
+            SELECT value
+            FROM settings
+            WHERE key = ?;''', (key,)).fetchone()
+
+        if row:
+            return json.loads(row[0])
+    return default
+
+
+def set_setting(key, value):
+    with SQLiteConn() as c:
+        c.execute(
+            'INSERT or REPLACE INTO settings (key, vale) VALUES (?, ?)',
+            (key, value)
+        )

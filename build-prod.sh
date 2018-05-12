@@ -3,7 +3,7 @@
 #
 # This is a CI script- it regularly pulls / merges from master
 # (as this is intended to be run on a production branch), and
-# if there are changes it will do the needful. 
+# if there are changes it will do the needful.
 #
 # Couple of cases for needful here.
 #
@@ -22,7 +22,7 @@ IFS=$"\n\t"
 # Flag to avoid endless loops when re-initializing the script.
 LOG_FILE=/var/log/botman-v3/botman.log
 INITIAL_RUN=1
-TIME=200
+TIME=20
 
 function update_this() {
     # If this script needs updating, exec the new one.
@@ -53,7 +53,7 @@ function log_vars_and_stuff() {
     echo "UPDATE_SCRIPT     =    $UPDATE_SCRIPT"
     echo "INITIAL_RUN       =    $INITIAL_RUN"
     echo "GIT_SHA           =    $GIT_SHA"
-    
+
 }
 
 function maybe_update_script() {

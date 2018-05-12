@@ -2,9 +2,9 @@
 """Botman-v3.
 
 Fully featured chatbot.
+
 """
 from importlib import reload
-import random
 import sys
 from threading import Thread
 
@@ -13,7 +13,7 @@ from slackbot.bot import listen_to, respond_to
 
 from botman import listen
 from botman import talk
-from botman.db_mgmt import debug_ngrams
+from botman import settings
 
 RESPOND_PERCENT = 100
 DB_NAME = '/opt/botman-v3/main.db'
@@ -24,22 +24,18 @@ def hear(message):
     print(message.body['text'])
     reload(listen)
     reload(talk)
+
     listen_thread = Thread(target=listen.run, args=(message,))
+    talk_thread = Thread(target=talk.run, args=(message,))
+
     listen_thread.start()
-    if random.random() < 1/30.0:
-        talk_thread = Thread(target=talk.run, args=(message,))
-        talk_thread.start()
-
-
-@respond_to('debug')
-def debug_reply(message):
-    print(debug_ngrams())
-    message.send('Check the logs.')
+    talk_thread.start()
 
 
 @respond_to('.*')
 def catch_direct_cmds(message):
-    talk.run(message)
+    settings_thread = Thread(target=settings.run, args=(message,))
+    settings_thread.run()
 
 
 def main(args):
