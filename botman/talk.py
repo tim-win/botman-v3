@@ -1,10 +1,10 @@
 """Talking stuff."""
 import random
+import time
 
 from botman.db_mgmt import fetch_counts
 from botman.markov import choose_ngram
-from botman.db_mgmt import fetch_settings
-from botman.db_mgmt import ensure_settings_table
+from botman.settings import fetch_typed_setting
 
 
 def generate_chain():
@@ -21,13 +21,24 @@ def generate_chain():
     return ' '.join(chain)
 
 
-def run(message, infrequent=True):
+def run(message, infrequent=True, immediate=False):
     """All things to do when talking."""
 
     if infrequent:
-        ensure_settings_table()
-        freq = float(fetch_settings('frequency', '10'))
+
+        freq = fetch_typed_setting('frequency')
+        if freq < 1.0 or freq > 30.0:
+            freq = 30.0
+
         if random.random() > 1 / freq:
             return
+
+    if not immediate:
+
+        max_delay = fetch_typed_setting('delay')
+        delay = max_delay * random.random()
+        print('Delaying response by {0}'.format(delay))
+
+        time.sleep(delay)
 
     message.send(generate_chain())

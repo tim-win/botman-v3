@@ -151,7 +151,7 @@ def ensure_settings_table():
         )
 
 
-def fetch_settings(key, default=None):
+def fetch_setting(key, default=None):
     with SQLiteConn() as c:
         row = c.execute('''
             SELECT value
@@ -166,6 +166,6 @@ def fetch_settings(key, default=None):
 def set_setting(key, value):
     with SQLiteConn() as c:
         c.execute(
-            'INSERT or REPLACE INTO settings (key, vale) VALUES (?, ?)',
+            'INSERT or REPLACE INTO settings (key, value) VALUES (?, ?)',
             (key, value)
         )
