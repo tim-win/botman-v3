@@ -10,7 +10,7 @@ class SQLiteConn(object):
         self.conn = None
 
     def __enter__(self):
-        self.conn = sqlite3.connect(DB_NAME)
+        self.conn = sqlite3.connect(DB_NAME, timeout=30)
         return self.conn.cursor()
 
     def __exit__(self, *args):

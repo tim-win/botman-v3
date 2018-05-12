@@ -6,6 +6,7 @@ Fully featured chatbot.
 from importlib import reload
 import random
 import sys
+from threading import Thread
 
 from slackbot.bot import Bot
 from slackbot.bot import listen_to, respond_to
@@ -23,10 +24,11 @@ def hear(message):
     print(message.body['text'])
     reload(listen)
     reload(talk)
-    listen.run(message)
+    listen_thread = Thread(target=listen.run, args=(message,))
+    listen_thread.start()
     if random.random() < 1/30.0:
-        talk.run(message)
-    # message.send('ok, prove this works at all')
+        talk_thread = Thread(target=talk.run, args=(message,))
+        talk_thread.start()
 
 
 @respond_to('debug')
