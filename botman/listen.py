@@ -12,6 +12,8 @@ DB_NAME = '/opt/botman-v3/main.db'
 
 def run(message):
     """All things to do when listening."""
+    print('INFO: Running listen handler')
+
     ensure_messages_table()
 
     text = record_message(message)

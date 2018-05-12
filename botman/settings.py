@@ -119,7 +119,9 @@ def show_settings(message):
 
 def run(message):
     ensure_settings_table()
-    print('running settings handler')
+
+    print('Running settings handler')
+
     if re.match(SAVE_SETTINGS_RE, message.body['text']):
         save_settings(message)
 

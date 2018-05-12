@@ -23,6 +23,7 @@ def generate_chain():
 
 def run(message, infrequent=True, immediate=False):
     """All things to do when talking."""
+    print('INFO: Running talk handler')
 
     if infrequent:
 
