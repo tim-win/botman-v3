@@ -7,7 +7,7 @@ WORKDIR /botman-v3/
 
 ENTRYPOINT ["/botman-v3/entrypoint.sh"]
 
-CMD ["python3", "/botman-v3/run.py"]
+CMD ["python3", "-u", "/botman-v3/run.py"]
 
 RUN apk update && \
     apk add \
