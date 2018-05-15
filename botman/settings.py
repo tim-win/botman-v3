@@ -22,7 +22,7 @@ SCHEMA = {
             is greater than `1 / <frequency>`,
             he will generate nonsense.
             '''),
-        'max': 100,
+        'max': 10000,
         'min': 1
     },
     'delay': {
