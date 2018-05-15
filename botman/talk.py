@@ -28,8 +28,6 @@ def run(message, infrequent=True, immediate=False):
     if infrequent:
 
         freq = fetch_typed_setting('frequency')
-        if freq < 1.0 or freq > 30.0:
-            freq = 30.0
 
         if random.random() > 1 / freq:
             return
