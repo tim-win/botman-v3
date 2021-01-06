@@ -2,6 +2,5 @@ slackbot
 ipython
 pytest
 hypothesis
-numpy
 nltk
 requests
