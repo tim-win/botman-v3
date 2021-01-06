@@ -42,6 +42,7 @@ function rebuild_app() {
     echo "Launching new docker container..."
     docker run \
         -d --name=botman-v3 \
+        --restart always \
         -v /opt/botman-v3/:/opt/botman-v3 \
         botman-v3:${GIT_SHA}
 }

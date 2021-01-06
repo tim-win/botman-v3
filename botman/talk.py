@@ -1,10 +1,13 @@
 """Talking stuff."""
 import random
 import time
+import requests
 
+from botman.context import compile_context
 from botman.db_mgmt import fetch_counts
 from botman.markov import choose_ngram
 from botman.settings import fetch_typed_setting
+
 
 
 def generate_chain():
