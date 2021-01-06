@@ -5,3 +5,5 @@ hypothesis
 numpy
 pandas
 nltk
+requests
+cython
