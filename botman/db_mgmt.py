@@ -48,6 +48,71 @@ def record_message(message):
     return message.body['text']
 
 
+def fetch_conversation(channel, max_messages=100, threshold=60*60*12):
+    """Get the latest `max_messages` messages from a channel.
+
+    message : slack message object lol
+    max_messages : int
+        This is the maximum number of resposes in a conversation to include
+    threshold : int
+        time threshold in seconds before a message is deemed outside of the
+        conversation window
+    """
+
+    with SQLiteConn() as c:
+        # fetch
+        cursor = c.execute('''
+            SELECT *
+            FROM messages
+            WHERE channel = ?
+            ORDER BY ts DESC
+            LIMIT ?;''',
+            (
+                channel,
+                max_messages
+            )
+        )
+
+        # Then check results against threshold
+        records = []
+        current = None
+        for item in cursor:
+            if current is None:
+                current = item[1]
+                records.append(item)
+                continue
+            if current - item[1] > threshold:
+                break
+
+            current = item[1]
+            records.append(item)
+
+    # return convo in chronolical order
+    return reversed(records)
+
+
+def get_channel_messages(channel):
+    messages = []
+    with SQLiteConn() as c:
+        cursor = c.execute('''
+            SELECT * from messages
+            WHERE channel = ?;''', (channel,))
+        for i in cursor:
+            messages.append(i)
+    return messages
+
+
+def fetch_channel_names():
+    channels = set()
+    with SQLiteConn() as c:
+        cursor = c.execute('''
+           SELECT channel FROM messages
+           ORDER BY channel;''')
+        for channel in cursor:
+            channels.add(channel[0])
+    return sorted(list(channels))
+
+
 def fetch_counts(ngram):
     counts = {}
 
@@ -125,6 +190,7 @@ def retrieve_random_message():
         rando = row[0]
 
     return rando
+
 
 
 def debug_ngrams():

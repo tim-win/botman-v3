@@ -42,4 +42,10 @@ def run(message, infrequent=True, immediate=False):
 
         time.sleep(delay)
 
-    message.send(generate_chain())
+    context = compile_context(message.body['channel'])
+
+    text = requests.post('http://workhorse:5000/generate', json={'context': context}).text
+
+    response = json.loads(text)['response']
+
+    message.send(response)
