@@ -17,10 +17,3 @@ def run(message):
     ensure_messages_table()
 
     text = record_message(message)
-
-    text = clean(text)
-
-    ensure_ngrams_table()
-    ngrams = normalize(text)
-    for ngram in ngrams:
-        add_gram(ngram, ngrams[ngram])
