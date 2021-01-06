@@ -1,6 +1,7 @@
 """Talking stuff."""
 import random
 import time
+import json
 import requests
 
 from botman.context import compile_context
