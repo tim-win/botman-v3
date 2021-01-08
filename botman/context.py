@@ -5,8 +5,8 @@ def compile_context(channel, limit=600):
     """Compile context for new brain."""
     context = ''
 
-    records = fetch_conversation(channel)
-    print("this many records found:", len(list(records)))
+    records = list(fetch_conversation(channel))
+    print("this many records found:", len(records))
 
     for record in records:
         print(f'adding record:\n{record[2]}: {record[0]}')
