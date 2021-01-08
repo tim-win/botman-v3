@@ -17,5 +17,5 @@ def compile_context(channel, limit=600):
         start = len(context) - limit
         context = context[start:]
 
-    print('Context being sent:')
+    print(f'Context being sent to {channel}: {context}')
     return context
