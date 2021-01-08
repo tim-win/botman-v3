@@ -48,6 +48,8 @@ def run(message, infrequent=True, immediate=False):
 
     text = requests.post('http://workhorse:8080/generate', json={'context': context}).text
 
+    print('Raw response text:', text)
+
     response = json.loads(text)['response']
 
     message.send(response)

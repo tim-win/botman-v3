@@ -22,7 +22,7 @@ IFS=$"\n\t"
 # Flag to avoid endless loops when re-initializing the script.
 LOG_FILE=/var/log/botman-v3/botman.log
 INITIAL_RUN=1
-TIME=200
+TIME=20
 
 function update_this() {
     # If this script needs updating, exec the new one.
