@@ -8,7 +8,7 @@ def compile_context(channel, limit=600):
     records = fetch_conversation(channel)
     for record in records:
         context += '{}: {}\n\n'.format(record[2], record[0])
-    context += 'U0BOTMAN4: '
+    context += 'UAF5C7S1Z: '
     
     # Trim to size
     if len(context) > limit:
