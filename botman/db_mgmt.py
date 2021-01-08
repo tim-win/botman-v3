@@ -74,9 +74,11 @@ def fetch_conversation(channel, max_messages=100, threshold=60*60*12):
         )
 
         # Then check results against threshold
+        print('retrieved records? maybe')
         records = []
         current = None
         for item in cursor:
+            print(f'Item found in cursor: {item}')
             if current is None:
                 current = item[1]
                 records.append(item)

@@ -7,7 +7,9 @@ def compile_context(channel, limit=600):
 
     records = fetch_conversation(channel)
     print("this many records found:", len(list(records)))
+
     for record in records:
+        print(f'adding record:\n{record[2]}: {record[0]}')
         context += '{}: {}\n\n'.format(record[2], record[0])
     context += 'UAF5C7S1Z: '
 
