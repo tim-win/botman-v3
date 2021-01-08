@@ -46,7 +46,7 @@ def run(message, infrequent=True, immediate=False):
 
     context = compile_context(message.body['channel'])
 
-    text = requests.post('http://workhorse:5000/generate', json={'context': context}).text
+    text = requests.post('http://workhorse:8080/generate', json={'context': context}).text
 
     response = json.loads(text)['response']
 
